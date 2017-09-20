@@ -5,6 +5,9 @@ module Feedjira
     include Enumerable
     include DateTimeUtilities
 
+    ELEMENTS_TO_SANITIZE =
+      %w(title author summary content image).freeze
+
     def published
       @published ||= @updated
     end
@@ -39,7 +42,7 @@ module Feedjira
     end
 
     def sanitize!
-      %w(title author summary content image).each do |name|
+      ELEMENTS_TO_SANITIZE.each do |name|
         if respond_to?(name) && send(name).respond_to?(:sanitize!)
           send(name).send :sanitize!
         end
