@@ -8,13 +8,14 @@ module Feedjira
       # '水, 31 8 2016 07:37:00 PDT'
       JAPANESE_SYMBOLS = %w(日 月 火 水 木 金 土).freeze
       PATTERNS = ["%m/%d/%Y %T %p", "%d %m %Y %T %Z"].freeze
+      
+      REGEX = Regexp.new("^(#{JAPANESE_SYMBOLS.join('|')}),\s")
 
       # rubocop:disable Metrics/MethodLength
       def self.parse(string)
         PATTERNS.each do |p|
           begin
-            datetime = DateTime.strptime(prepare(string), p)
-            return datetime
+            return DateTime.strptime(prepare(string), p)
           rescue StandardError => e
             Feedjira.logger.debug("Failed to parse date #{string}")
             Feedjira.logger.debug(e)
@@ -25,8 +26,7 @@ module Feedjira
       end
 
       def self.prepare(string)
-        rgx = Regexp.new("^(#{JAPANESE_SYMBOLS.join('|')}),\s")
-        string.gsub(rgx, "".freeze)
+        string.gsub(REGEX, "".freeze)
       end
       private_class_method :prepare
     end
