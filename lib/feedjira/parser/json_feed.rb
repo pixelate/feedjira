@@ -18,13 +18,13 @@ module Feedjira
 
       def initialize(json)
         @json = json
-        @version = json.fetch("version")
-        @title = json.fetch("title")
-        @url = json.fetch("home_page_url", nil)
-        @feed_url = json.fetch("feed_url", nil)
-        @description = json.fetch("description", nil)
-        @expired = json.fetch("expired", nil)
-        @entries = parse_items(json["items"])
+        @version = json.fetch("version".freeze)
+        @title = json.fetch("title".freeze)
+        @url = json.fetch("home_page_url".freeze, nil)
+        @feed_url = json.fetch("feed_url".freeze, nil)
+        @description = json.fetch("description".freeze, nil)
+        @expired = json.fetch("expired".freeze, nil)
+        @entries = parse_items(json["items".freeze])
       end
 
       private

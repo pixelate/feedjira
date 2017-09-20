@@ -9,18 +9,18 @@ module Feedjira
 
       def initialize(json)
         @json = json
-        @entry_id = json.fetch("id")
-        @url = json.fetch("url")
-        @external_url = json.fetch("external_url", nil)
-        @title = json.fetch("title", nil)
-        @content = parse_content(json.fetch("content_html", nil), json.fetch("content_text", nil))
+        @entry_id = json.fetch("id".freeze)
+        @url = json.fetch("url".freeze)
+        @external_url = json.fetch("external_url".freeze, nil)
+        @title = json.fetch("title".freeze, nil)
+        @content = parse_content(json.fetch("content_html".freeze, nil), json.fetch("content_text".freeze, nil))
         @summary = json.fetch("summary", nil)
-        @image = json.fetch("image", nil)
-        @banner_image = json.fetch("banner_image", nil)
-        @published = parse_published(json.fetch("date_published", nil))
-        @updated = parse_updated(json.fetch("date_modified", nil))
-        @author = author_name(json.fetch("author", nil))
-        @categories = json.fetch("tags", [])
+        @image = json.fetch("image".freeze, nil)
+        @banner_image = json.fetch("banner_image".freeze, nil)
+        @published = parse_published(json.fetch("date_published".freeze, nil))
+        @updated = parse_updated(json.fetch("date_modified".freeze, nil))
+        @author = author_name(json.fetch("author".freeze, nil))
+        @categories = json.fetch("tags".freeze, [])
       end
 
       private

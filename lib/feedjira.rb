@@ -56,7 +56,7 @@ module Feedjira
     parser = parser_for_xml(xml)
 
     if parser.nil?
-      raise NoParserAvailable, "No valid parser for XML."
+      raise NoParserAvailable, "No valid parser for XML.".freeze
     end
 
     parser.parse xml, &block

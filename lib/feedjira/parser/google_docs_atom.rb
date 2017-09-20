@@ -8,8 +8,8 @@ module Feedjira
       include FeedUtilities
       element :title
       element :subtitle, as: :description
-      element :link, as: :url, value: :href, with: { type: "text/html" }
-      element :link, as: :feed_url, value: :href, with: { type: "application/atom+xml" } # rubocop:disable Metrics/LineLength
+      element :link, as: :url, value: :href, with: { type: "text/html".freeze }
+      element :link, as: :feed_url, value: :href, with: { type: "application/atom+xml".freeze } # rubocop:disable Metrics/LineLength
       elements :link, as: :links, value: :href
       elements :entry, as: :entries, class: GoogleDocsAtomEntry
 

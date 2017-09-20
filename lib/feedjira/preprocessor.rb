@@ -20,11 +20,11 @@ module Feedjira
     end
 
     def content_nodes
-      doc.search 'entry > content[type="xhtml"], entry > summary[type="xhtml"], entry > title[type="xhtml"]' # rubocop:disable Metrics/LineLength
+      doc.search 'entry > content[type="xhtml"], entry > summary[type="xhtml"], entry > title[type="xhtml"]'.freeze # rubocop:disable Metrics/LineLength
     end
 
     def raw_html(node)
-      node.search("./div").inner_html
+      node.search("./div".freeze).inner_html
     end
 
     def doc

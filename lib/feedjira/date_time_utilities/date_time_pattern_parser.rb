@@ -26,7 +26,7 @@ module Feedjira
 
       def self.prepare(string)
         rgx = Regexp.new("^(#{JAPANESE_SYMBOLS.join('|')}),\s")
-        string.gsub(rgx, "")
+        string.gsub(rgx, "".freeze)
       end
       private_class_method :prepare
     end

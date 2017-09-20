@@ -49,7 +49,7 @@ module Feedjira
     # @private
     def default_logger
       Logger.new(STDOUT).tap do |logger|
-        logger.progname = "Feedjira"
+        logger.progname = "Feedjira".freeze
         logger.level = Logger::WARN
       end
     end
