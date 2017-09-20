@@ -12,6 +12,9 @@ class Time
   # === Returns
   # A Time instance in UTC or nil if there were errors while parsing.
   # rubocop:disable Metrics/MethodLength
+  
+  REGEX = /\A\d{14}\z/
+  
   def self.parse_safely(dt)
     if dt.is_a?(Time)
       dt.utc
@@ -29,7 +32,7 @@ class Time
   def self.parse_string_safely(string)
     return nil if string.empty?
 
-    if string =~ /\A\d{14}\z/
+    if string =~ REGEX
       parse("#{string}Z", true)
     else
       parse(string).utc
