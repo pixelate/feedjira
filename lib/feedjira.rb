@@ -1,6 +1,4 @@
 require "zlib"
-require "faraday"
-require "faraday_middleware"
 require "sax-machine"
 require "loofah"
 require "logger"
@@ -43,7 +41,7 @@ require "feedjira/parser/json_feed_item"
 
 # Feedjira
 module Feedjira
-  class NoParserAvailable < StandardError; end
+  NoParserAvailable = Class.new(StandardError)
 
   extend Configuration
 
@@ -52,14 +50,14 @@ module Feedjira
   # @example
   #   xml = HTTParty.get("http://example.com").body
   #   Feedjira.parse(xml)
-  def parse(xml, &block)
-    parser = parser_for_xml(xml)
+  def parse(xml, parser: nil, &block)
+    parser ||= parser_for_xml(xml)
 
     if parser.nil?
       raise NoParserAvailable, "No valid parser for XML.".freeze
     end
 
-    parser.parse xml, &block
+    parser.parse(xml, &block)
   end
   module_function :parse
 

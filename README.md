@@ -25,39 +25,18 @@ An example of parsing a feed with Feedjira:
 
 ```ruby
 xml = HTTParty.get(url).body
-feed = Feedjira::Feed.parse xml
+feed = Feedjira.parse(xml)
 feed.entries.first.title
-# => "Announcing verison 1.0"
+# => "Announcing verison 3.0"
 ```
 
-## Adding a feed parsing class
-
-When determining which parser to use for a given XML document, the following
-list of parser classes is used:
-
-* `Feedjira::Parser::RSSFeedBurner`
-* `Feedjira::Parser::GoogleDocsAtom`
-* `Feedjira::Parser::AtomFeedBurner`
-* `Feedjira::Parser::Atom`
-* `Feedjira::Parser::ITunesRSS`
-* `Feedjira::Parser::RSS`
-* `Feedjira::Parser::JSONFeed`
-
-You can insert your own parser at the front of this stack by calling
-`add_feed_class`, like this:
-
-```ruby
-Feedjira::Feed.add_feed_class(MyAwesomeParser)
-```
-
-Now when you `parse`, `MyAwesomeParser` will be the first one to get a
-chance to parse the feed.
+## Specifying parser
 
 If you have the XML and just want to provide a parser class for one parse, you
-can specify that using `parse_with`:
+can specify that using `parse` with the parser option:
 
 ```ruby
-Feedjira::Feed.parse_with(MyAwesomeParser, xml)
+Feedjira.parse(xml, parser: MyAwesomeParser)
 ```
 
 ## Adding attributes to all feeds types / all entries types
@@ -66,7 +45,7 @@ Feedjira::Feed.parse_with(MyAwesomeParser, xml)
 # Add the generator attribute to all feed types
 Feedjira::Feed.add_common_feed_element("generator")
 xml = HTTParty.get("http://www.pauldix.net/atom.xml").body
-Feedjira::Feed.parse(xml).generator
+Feedjira.parse(xml).generator
 # => "TypePad"
 ```
 
@@ -84,14 +63,29 @@ end
 # Fetch a feed containing GeoRss info and print them
 url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.atom"
 xml = HTTParty.get(url).body
-Feedjira::Feed.parse(xml).entries.each do |entry|
+Feedjira.parse(xml).entries.each do |entry|
   puts "Elevation: #{entry.elevation}"
 end
 ```
 
 ## Configuration
 
-#### Parsers
+### Parsers
+
+#### Adding a custom parser
+
+You can insert your own parser at the front of the available parser list by:
+
+```ruby
+Feedjira.configure do |config|
+  config.parsers.unshift(MyAwesomeParser)
+end
+```
+
+Now when you call `Feedjira.parse`, `MyAwesomeParser` will be the first one to
+get a chance to parse the feed.
+
+#### Explicitly set all available parsers
 
 Feedjira can be configured to use a specific set of parsers and in a specific order:
 

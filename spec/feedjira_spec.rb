@@ -2,6 +2,18 @@ require "spec_helper"
 
 RSpec.describe Feedjira do
   describe ".parse" do
+    context "allows the parser to be specified" do
+      it "should parse an rss feed" do
+        parser = Feedjira.parser_for_xml(sample_rss_feed)
+        feed = Feedjira.parse(sample_rss_feed, parser: parser)
+
+        expect(feed.title).to eq "Tender Lovemaking"
+        published = Time.parse_safely "Thu Dec 04 17:17:49 UTC 2008"
+        expect(feed.entries.first.published).to eq published
+        expect(feed.entries.size).to eq 10
+      end
+    end
+
     context "when there's an available parser" do
       it "should parse an rdf feed" do
         feed = Feedjira.parse(sample_rdf_feed)
@@ -41,6 +53,14 @@ RSpec.describe Feedjira do
         published = Time.parse_safely "Wed, 15 Jun 2005 19:00:00 GMT"
         expect(feed.entries.first.published).to eq published
         expect(feed.entries.size).to eq 3
+      end
+
+      it "with nested dc:identifier it does not overwrite entry_id" do
+        feed = Feedjira.parse(sample_rss_feed_huffpost_ca)
+        expect(feed.title.strip).to eq "HuffPost Canada - Athena2 - All Posts"
+        expect(feed.entries.size).to eq 2
+        expect(feed.entries.first.id).to eq "23246627"
+        expect(feed.entries.last.id.strip).to eq "1"
       end
     end
 
