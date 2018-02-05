@@ -9,7 +9,7 @@ module Feedjira
       element :link, as: :url, value: :href, with: { rel: "alternate".freeze }
       element :link, as: :feed_url, value: :href, with: { rel: "self".freeze }
       element :name, as: :author
-      element :"yt:channelId", as: :youtube_channel_id
+#      element :"yt:channelId", as: :youtube_channel_id
 
       elements :entry, as: :entries, class: AtomYoutubeEntry
 
